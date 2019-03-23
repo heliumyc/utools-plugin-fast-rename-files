@@ -214,13 +214,13 @@ window.onload = function () {
 
       // detect whether names in the list are duplicated
       isDuplicated() {
-        let fileArr = this.multipleSelection.map((ele) => ele.newName)
+        let fileArr = this.multipleSelection.map((ele) => ele.newFullName)
         return fileArr.length !== (new Set(fileArr)).size
       },
 
       // detect whether names in the list are conflicted with that in the disk
       async isConflicted() {
-        let newFileArr = this.multipleSelection.map((ele) => ele.newName)
+        let newFileArr = this.multipleSelection.map((ele) => ele.newFullName)
         let totalDirents = await window.readDir(this.path, {withFileTypes: true})
         let diskFileSet = new Set(totalDirents.filter(dirent => dirent.isFile())
               .map(dirent => dirent.name))
