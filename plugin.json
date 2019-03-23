@@ -14,7 +14,7 @@
 			"code": "fastRenameFiles",
 			"explain": "批量修改文件名称",
 	        "cmds":[
-				"fnames",
+				"fnames", "修改文件名称",
 				{
 					"label": "批量修改该文件夹下的文件名称",
 					"type": "files",
