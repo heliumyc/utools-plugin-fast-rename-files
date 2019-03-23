@@ -8,7 +8,7 @@
 
 	"main": "index.html",
 	"preload":"preload.js",
-	"logo": "./assets/logo.jpeg",
+	"logo": "./assets/logo.png",
 	"features": [
 	    {
 			"code": "fastRenameFiles",
