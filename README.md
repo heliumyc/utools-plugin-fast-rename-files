@@ -11,7 +11,7 @@
 
 ## 技术栈
 
-Vue.js + Element UI
+[Vue.js](https://vuejs.org) + [Element UI](http://element.eleme.io/)
 
 utools支持暴露部分nodeJs和electron的部分api
 
