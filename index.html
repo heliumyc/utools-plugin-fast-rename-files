@@ -1,0 +1,159 @@
+<!--
+Project: utools_plugins_fast_rename
+File Created: 2019-03-21
+Author: Helium (ericyc4@gmail.com)
+Description: 
+------
+Last Modified: 2019-03-23
+Modified By: Helium (ericyc4@gmail.com)
+-->
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./assets/lib/element-ui.css">
+  <link rel="stylesheet" href="./assets/index.css">
+  <!-- <script src="./mockpreload.js"></script> -->
+</head>
+
+<body>
+  <div id="app" style="display:flex; flex-direction:column;padding:0 10px">
+    <!-- manipulation bar -->
+    <div>
+      <el-row :gutter="20">
+        <el-col :span="20">
+          <el-tabs type="border-card" v-model="mode">
+            <el-tab-pane label="重命名" name="rename">
+              <div class="flex-box">
+                <div class="option-item">
+                  <span class="text">格式</span>
+                  <el-select style="width:150px;" v-model="renameFormat" filterable allow-create placeholder="重命名格式"
+                    size="small">
+                    <el-option v-for="item in renameFormatOptions" :key="item" :label="item" :value="item">
+                    </el-option>
+                  </el-select>
+                </div>
+                <div class="text" style="line-height: 2;margin-top: 5px;">
+                  {FILE}指原文件名, {NUM}指填充序号, 可直接输入以自定义
+                </div>
+              </div>
+              <div class="flex-box">
+                <div class="option-item">
+                  <span class="text">起始序号</span>
+                  <el-input-number style="width:100px;" v-model="renameStartNum" :min="0" :max="10" size="mini">
+                  </el-input-number>
+                </div>
+                <div class="option-item">
+                  <span class="text">步长</span>
+                  <el-input-number style="width:100px;" v-model="renameStep" :min="1" :max="10" size="mini">
+                  </el-input-number>
+                </div>
+                <div class="option-item">
+                  <span class="text">填充位数</span>
+                  <el-input-number style="width:100px;" v-model="renamePadding" :min="0" :max="10" size="mini">
+                  </el-input-number>
+                </div>
+              </div>
+
+            </el-tab-pane>
+            <el-tab-pane label="添加" name="add">
+              <div class="flex-box" style="flex-direction:column;">
+                <div class="flex-box">
+                  <div class="option-item">
+                    <span class="text">前缀</span>
+                    <div style="display:inline-block; width: 250px;">
+                      <el-input placeholder="请输入前缀" v-model="addPrefix" clearable size="small"></el-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-box">
+                  <div class="option-item">
+                    <span class="text">后缀</span>
+                    <div style="display:inline-block; width: 250px;">
+                      <el-input placeholder="请输入后缀" v-model="addSuffix" clearable size="small"></el-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="替换" name="subtitute">
+              <div class="flex-box" style="flex-direction:column;">
+                <div class="flex-box">
+                  <div class="option-item">
+                    <span class="text">匹配</span>
+                    <div style="display:inline-block; width: 250px;">
+                      <el-input placeholder="请输入待匹配的模式" v-model="subtitutePattern" clearable size="small"></el-input>
+                    </div>
+                    <span class="text" style="margin-left: 10px;">使用正则</span>
+                    <el-switch v-model="isRegex" active-value="true" inactive-value="false"></el-switch>
+                  </div>
+                </div>
+                <div class="flex-box">
+                  <div class="option-item">
+                    <span class="text">替换</span>
+                    <div style="display:inline-block; width: 250px;">
+                      <el-input placeholder="请输入替换的字符串" v-model="subtituteStr" clearable size="small"></el-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="修改类型" name="extension">
+              <div class="flex-box" style="flex-direction:column;">
+                <div class="flex-box">
+                  <div class="option-item">
+                    <span class="text">原类型</span>
+                    <div style="display:inline-block; width: 250px;">
+                      <el-input placeholder="请输入待替换类型" v-model="extToReplace" clearable size="small"></el-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-box">
+                  <div class="option-item">
+                    <span class="text">新类型</span>
+                    <div style="display:inline-block; width: 250px;">
+                      <el-input placeholder="请输入新类型" v-model="extToReplaceWith" clearable size="small"></el-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
+        </el-col>
+        <el-col :span="4">
+          <div class="btn-group">
+            <el-button class="btn" @click="handleAddFolder" plain>选择文件夹</el-button>
+            <div></div>
+            <el-button class="btn" type="primary" @click="handlePreview" plain>预览</el-button>
+            <div></div>
+            <el-button class="btn" type="danger" @click="handleExecute" plain>执行</el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    <!-- area for file display -->
+    <div style="margin-top:20px; font-size: 14px;">
+      <el-table ref="multipleTable" :data="filesData" tooltip-effect="dark" style="width: 100%" :border="true"
+        @selection-change="handleSelectionChange" max-height="320" @sort-change="handleSort"
+        header-cell-class-name="table-header" cell-class-name="text" v-loading="loading">
+        <el-table-column type="selection">
+        </el-table-column>
+        <el-table-column prop="filename" label="文件名" width="210" sortable="custom">
+        </el-table-column>
+        <el-table-column prop="newFullName" label="新文件名" width="210">
+        </el-table-column>
+        <el-table-column prop="date" label="创建日期" width="185" sortable>
+        </el-table-column>
+        <el-table-column prop="ext" label="类型" fit="true" sortable>
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
+</body>
+<script src="./assets/lib/vue.js"></script>
+<script src="./assets/lib/element-ui.js"></script>
+<script src="./assets/util.js"></script>
+<script src="./assets/index.js"></script>
+
+</html>

@@ -1,0 +1,51 @@
+.btn {
+  /* width: 100px; */
+  text-align: center;
+}
+
+.btn-group {
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-between;
+}
+  .btn-group > .btn {
+    margin-bottom: 20px;
+  }
+
+.text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.option-item {
+  padding-right: 20px;
+  min-height: 40px;
+}
+  .option-item > :not(.text) {
+    margin-top: 5px;
+  }
+
+  .option-item > .text {
+    margin-right: 15px;
+  }
+
+.flex-box {
+  display:flex; 
+  justify-content: flex-start;
+}
+  .flex-box+.flex-box {
+    margin-top: 20px;
+  }
+
+.table-header {
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+/* override */
+html {
+  text-shadow: 0.01em 0.01em 0.01em #999999 !important;
+}
+[class^=el-icon-] {
+  line-height: inherit;
+}

@@ -1,0 +1,28 @@
+{
+	"pluginName": "批量修改文件名称",
+	"version": "1.0.0",
+	"description": "我的第一个uTools插件",
+
+	"author": "heliumyc",
+	"homepage": "https://u.tools",
+
+	"main": "index.html",
+	"preload":"preload.js",
+	"logo": "./assets/logo.jpeg",
+	"features": [
+	    {
+			"code": "fastRenameFiles",
+			"explain": "批量修改文件名称",
+	        "cmds":[
+				"fnames",
+				{
+					"label": "批量修改该文件夹下的文件名称",
+					"type": "files",
+					"fileType": "directory",
+					"minNum": 1,
+					"maxNum": 1
+				}
+			]
+	    }
+	]
+}
