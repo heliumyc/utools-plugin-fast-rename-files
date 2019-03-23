@@ -1,6 +1,6 @@
 {
 	"pluginName": "批量修改文件名称",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "可以批量地修改某个文件夹下的文件名",
 
 	"author": "heliumyc",
