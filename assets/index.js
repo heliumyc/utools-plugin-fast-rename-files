@@ -4,7 +4,7 @@
  * Author: Helium (ericyc4@gmail.com)
  * Description: 
  * ------
- * Last Modified: 2019-03-23
+ * Last Modified: 2019-03-24
  * Modified By: Helium (ericyc4@gmail.com)
  */
 
@@ -79,46 +79,51 @@ window.onload = function () {
 
       handlePreview() {
         this.clearNewname()
+        let selectedNameSet = new Set(this.multipleSelection.map((ele) => ele.filename))
         switch (this.mode) {
           case 'rename':
-            this.multipleSelection.forEach((ele, index, arr) => {
-              ele.newName = util.format(ele.name, this.renameFormat,
-                  this.renameStartNum + index * this.renameStep, this.renamePadding)
-              ele.newFullName = util.addNameWithExt(ele.newName, ele.ext)
+            this.filesData.forEach((ele, index, arr) => {
+              if (selectedNameSet.has(ele.filename)) {
+                ele.newName = util.format(ele.name, this.renameFormat,
+                    this.renameStartNum + index * this.renameStep, this.renamePadding)
+                ele.newFullName = util.addNameWithExt(ele.newName, ele.ext)
+              }
             })
             break;
 
           case 'add':
-            this.multipleSelection.forEach((ele, index, arr) => {
+          this.filesData.forEach((ele, index, arr) => {
+            if (selectedNameSet.has(ele.filename)) {
               ele.newName = util.addPrefixAndSuffix(ele.name, this.addPrefix, this.addSuffix)
               ele.newFullName = util.addNameWithExt(ele.newName, ele.ext)
+            }
             })
             break;
 
           case 'subtitute':
-            this.multipleSelection.forEach((ele, index, arr) => {
+            this.filesData.forEach((ele, index, arr) => {
+              if (selectedNameSet.has(ele.filename)) {
               let pattern = this.isRegex ? new RegExp(this.subtitutePattern, 'g') : this.subtitutePattern
               ele.newName = util.subtitute(ele.name, pattern, this.subtituteStr)
               ele.newFullName = util.addNameWithExt(ele.newName, ele.ext)
+              }
             })
             break;
 
           case 'extension':
-            this.multipleSelection.forEach((ele, index, arr) => {
-              if (ele.ext === this.extToReplace) {
-                ele.ext = this.extToReplaceWith
-                ele.newName = ele.name
-                ele.newFullName = util.addNameWithExt(ele.newName, ele.ext)
+            this.filesData.forEach((ele, index, arr) => {
+              if (selectedNameSet.has(ele.filename)) {
+                if (ele.ext === this.extToReplace) {
+                  ele.ext = this.extToReplaceWith
+                  ele.newName = ele.name
+                  ele.newFullName = util.addNameWithExt(ele.newName, ele.ext)
+                }
               }
             })
             break;
           default:
             break;
         }
-        // sometimes stuck and stop for seconds, and profile shows much idle time
-        // i guess either vue or elementUI forgot to re-render
-        // most likely the elementui, so, i force it to rerender the table
-        this.$refs.multipleTable.doLayout()
       },
 
       async handleExecute() {
@@ -195,6 +200,7 @@ window.onload = function () {
             fileNames.map(async (file) => {
               let fileStat = await window.readFileStat(path + '/' + file);
               fileStat.newName = '';
+              fileStat.newFullName = '';
               fileStat.filename = file;
               [fileStat.name, fileStat.ext] = util.extractExt(file);
               fileStat.date = util.millisToDateStr(fileStat.birthtimeMs);
