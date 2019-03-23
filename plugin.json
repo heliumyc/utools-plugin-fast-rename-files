@@ -4,7 +4,7 @@
 	"description": "我的第一个uTools插件",
 
 	"author": "heliumyc",
-	"homepage": "https://u.tools",
+	"homepage": "https://github.com/heliumyc/utools-plugin-fast-rename-files",
 
 	"main": "index.html",
 	"preload":"preload.js",
