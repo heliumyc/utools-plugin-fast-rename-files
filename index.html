@@ -134,7 +134,8 @@ Modified By: Helium (ericyc4@gmail.com)
     </div>
     <!-- area for file display -->
     <div style="margin-top:20px; font-size: 14px;">
-      <el-table ref="multipleTable" :data="filesData" tooltip-effect="dark" style="width: 100%" :border="true"
+      <el-table ref="multipleTable" :data="filesData" tooltip-effect="dark" style="width: 100%" 
+        :border="true" row-key="filesData.filename"
         @selection-change="handleSelectionChange" max-height="320" @sort-change="handleSort"
         header-cell-class-name="table-header" cell-class-name="text" v-loading="loading">
         <el-table-column type="selection">
