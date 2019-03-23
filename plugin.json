@@ -1,7 +1,7 @@
 {
 	"pluginName": "批量修改文件名称",
 	"version": "1.0.0",
-	"description": "我的第一个uTools插件",
+	"description": "可以批量地修改某个文件夹下的文件名",
 
 	"author": "heliumyc",
 	"homepage": "https://github.com/heliumyc/utools-plugin-fast-rename-files",
